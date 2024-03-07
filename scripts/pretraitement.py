@@ -4,7 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
 # Charger le fichier CSV
-csv_path = '/Users/tannina/Desktop/Interface_web/corpus/detection_dh.csv'
+#csv_path = '/Users/tannina/Desktop/Interface_web/corpus/detection_dh.csv'
+csv_path = '/Users/gemmafelton/Desktop/Interface_web/corpus/corpus_original.csv'
 df = pd.read_csv(csv_path)
 
 # Remplacer les valeurs nulles par une chaîne vide
@@ -25,7 +26,8 @@ def preprocess_text(text):
 df['tweet'] = df['tweet'].apply(preprocess_text)
 
 # Sauvegarder le DataFrame modifié dans un nouveau fichier CSV
-new_csv_path = '/Users/tannina/Desktop/Interface_web/corpus/detection_dh.csv'
+#new_csv_path = '/Users/tannina/Desktop/Interface_web/corpus/detection_dh.csv'
+new_csv_path = '/Users/gemmafelton/Desktop/Interface_web/corpus/detection_dh.csv'
 df.to_csv(new_csv_path, index=False)
 
 # Afficher les données après le prétraitement
