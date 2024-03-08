@@ -1,4 +1,6 @@
 import tensorflow as tf
+import json
+import pandas as pd
 from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import BinaryCrossentropy
@@ -6,7 +8,6 @@ from tensorflow.keras.metrics import BinaryAccuracy
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-import pandas as pd
 
 # Charger les données prétraitées
 dataset = '/Users/gemmafelton/Desktop/Interface_web/corpus/detection_dh.csv'
@@ -55,14 +56,19 @@ model.fit(train_sequences_padded, train_labels,
           callbacks=[early_stopping])
 
 # Évaluation du modèle sur l'ensemble de test
-test_loss, test_acc, test_recall, test_precision = model.evaluate(test_sequences_padded, test_labels)
-print(f'\nTest Accuracy: {test_acc}')
-print(f'Test Recall: {test_recall}')
-print(f'Test Precision: {test_precision}')
-
-# Prédictions sur l'ensemble de test
 predictions = model.predict(test_sequences_padded)
 predicted_classes = [1 if pred > 0.5 else 0 for pred in predictions]
 
-# Affichage du rapport de classification
-print('\nClassification Report:\n', classification_report(test_labels, predicted_classes))
+# Affichage du rapport de classification avec scikit-learn
+classification_rep = classification_report(test_labels, predicted_classes)
+print('\nClassification Report:\n', classification_rep)
+
+# Enregistrer les résultats dans un fichier json
+results_data = {
+    "actual_labels": test_labels.tolist(),
+    "predicted_labels": predictions.tolist(),
+    "classification_report": classification_rep,
+}
+
+with open('/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn2_classification_results.json', 'w') as json_file:
+    json.dump(results_data, json_file)
