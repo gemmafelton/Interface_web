@@ -1,79 +1,87 @@
+import pandas as pd
 import tensorflow as tf
 import json
-import pandas as pd
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional, Dropout
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import BinaryCrossentropy
-from tensorflow.keras.metrics import BinaryAccuracy, Recall, Precision
-from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Embedding, LSTM, Dense
+from tensorflow.keras.models import model_from_json
 
-# Charger les données prétraitées
-dataset = '/Users/gemmafelton/Desktop/Interface_web/corpus/detection_dh.csv'
-df = pd.read_csv(dataset)
 
-# Construire les étiquettes
-df['label'] = df.apply(lambda row: 1 if row['hate_speech_count'] > 0 or row['offensive_language_count'] > 0 else 0, axis=1)
+# Charger le dataset
+dataset_path = "/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_detection.csv"
+df = pd.read_csv(dataset_path, delimiter=',')
+
+# Séparer les données en features (X) et labels (y)
+X = df['tweet']
+y = df['class']
 
 # Diviser les données en ensembles d'entraînement et de test
-train_data, test_data, train_labels, test_labels = train_test_split(
-    df['tweet'], df['label'], test_size=0.2, random_state=42
-)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Tokenization
-tokenizer = tf.keras.preprocessing.text.Tokenizer()
-tokenizer.fit_on_texts(train_data)
+print("Size of training set:", len(X_train))
+print("Size of test set:", len(X_test))
 
-train_sequences = tokenizer.texts_to_sequences(train_data)
-test_sequences = tokenizer.texts_to_sequences(test_data)
+# Tokenizer les données
+max_words = 10000  # Nombre maximal de mots dans le vocabulaire
+tokenizer = Tokenizer(num_words=max_words)
+tokenizer.fit_on_texts(X_train)
 
-max_sequence_length = max(len(sequence) for sequence in train_sequences)
+# Convertir les textes en séquences d'entiers
+X_train_sequences = tokenizer.texts_to_sequences(X_train)
+X_test_sequences = tokenizer.texts_to_sequences(X_test)
 
-train_sequences_padded = tf.keras.preprocessing.sequence.pad_sequences(train_sequences, maxlen=max_sequence_length)
-test_sequences_padded = tf.keras.preprocessing.sequence.pad_sequences(test_sequences, maxlen=max_sequence_length)
+# Remplir les séquences pour qu'elles aient toutes la même longueur
+max_sequence_length = 256
+X_train_padded = pad_sequences(X_train_sequences, maxlen=max_sequence_length, padding='post')
+X_test_padded = pad_sequences(X_test_sequences, maxlen=max_sequence_length, padding='post')
 
-# Création du modèle RNN LSTM
-model = tf.keras.Sequential([
-    Embedding(input_dim=len(tokenizer.word_index)+1, output_dim=100, input_length=max_sequence_length),
-    Bidirectional(LSTM(128, return_sequences=True)),
-    Dropout(0.5),
-    Bidirectional(LSTM(64)),
-    Dropout(0.5),
-    Dense(64, activation='relu'),
-    Dropout(0.5),
-    Dense(1, activation='sigmoid')
-])
+# Construire le modèle RNN
+embedding_dim = 64
+lstm_units = 64
 
-# Compilation du modèle
-model.compile(optimizer=Adam(learning_rate=1e-4),
-              loss=BinaryCrossentropy(),
-              metrics=[BinaryAccuracy(name='accuracy'), Recall(name='recall'), Precision(name='precision')])
+model = Sequential()
+model.add(Embedding(input_dim=max_words, output_dim=embedding_dim, input_length=max_sequence_length))
+model.add(LSTM(units=lstm_units))
+model.add(Dense(3, activation='softmax'))  # 3 classes pour notre corpus
 
-# Entraînement du modèle
-early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
+# Compiler le modèle
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-model.fit(train_sequences_padded, train_labels,
-          epochs=10,
-          batch_size=64,
-          validation_split=0.2,
-          callbacks=[early_stopping])
+# Entraîner le modèle
+model.fit(X_train_padded, y_train, validation_data=(X_test_padded, y_test), epochs=14, batch_size=60)
 
-# Évaluation du modèle sur l'ensemble de test
-predictions = model.predict(test_sequences_padded)
-predicted_classes = [1 if pred > 0.5 else 0 for pred in predictions]
+# Évaluer le modèle
+accuracy = model.evaluate(X_test_padded, y_test)[1]
+print('Accuracy:', accuracy)
 
-# Affichage du rapport de classification avec scikit-learn
-classification_rep = classification_report(test_labels, predicted_classes)
-print('\nClassification Report:\n', classification_rep)
+# Sauvegarder l'architecture du modèle en JSON
+model_json = model.to_json()
+with open("/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_model.json", "w") as json_file:
+    json_file.write(model_json)
 
-# Enregistrer les résultats dans un fichier json
-results_data = {
-    "actual_labels": test_labels.tolist(),
-    "predicted_labels": predictions.tolist(),
-    "classification_report": classification_rep,
-    
-}
+# Sauvegarder les poids du modèle
+model.save_weights("/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_model_weights.h5")
 
-with open('/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_classification_results.json', 'w') as json_file:
-    json.dump(results_data, json_file)
+# Charger le modèle sauvegardé
+loaded_model = tf.keras.models.model_from_json(model_json)
+loaded_model.load_weights("/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_model_weights.h5")
+
+# Faire des prédictions sur un nouvel exemple
+input_tweet = input("Enter the tweet that you'd like to analyse: ")
+input_sequence = tokenizer.texts_to_sequences([input_tweet])
+input_padded = pad_sequences(input_sequence, maxlen=max_sequence_length, padding='post')
+
+output = loaded_model.predict(input_padded)
+print(output)
+
+# Assuming 'output' is a 2D array with shape (num_samples, num_classes)
+probabilities = tf.nn.softmax(output)
+probabilities_list = probabilities.numpy()
+
+class_labels = {0: 'hate speech', 1: 'offensive language', 2: 'neither'}
+
+print("Probabilities for each class:")
+for i, prob in enumerate(probabilities_list[0]):
+    print(f"Probability that this tweet is {class_labels[i]}: {prob * 100:.2f}%")
