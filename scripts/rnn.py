@@ -2,12 +2,13 @@ import pandas as pd
 import tensorflow as tf
 import json
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, LSTM, Dense
 from tensorflow.keras.models import model_from_json
-
+from tensorflow.keras.callbacks import EarlyStopping
 
 # Charger le dataset
 dataset_path = "/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_detection.csv"
@@ -33,7 +34,7 @@ X_train_sequences = tokenizer.texts_to_sequences(X_train)
 X_test_sequences = tokenizer.texts_to_sequences(X_test)
 
 # Remplir les séquences pour qu'elles aient toutes la même longueur
-max_sequence_length = 256
+max_sequence_length = 40
 X_train_padded = pad_sequences(X_train_sequences, maxlen=max_sequence_length, padding='post')
 X_test_padded = pad_sequences(X_test_sequences, maxlen=max_sequence_length, padding='post')
 
@@ -49,24 +50,41 @@ model.add(Dense(3, activation='softmax'))  # 3 classes pour notre corpus
 # Compiler le modèle
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-# Entraîner le modèle
-model.fit(X_train_padded, y_train, validation_data=(X_test_padded, y_test), epochs=14, batch_size=60)
+# Define early stopping
+early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
-# Évaluer le modèle
+# Train the model with early stopping
+model.fit(X_train_padded, y_train, validation_data=(X_test_padded, y_test), epochs=16, batch_size=32, callbacks=[early_stopping])
+
+# Evaluate the model
 accuracy = model.evaluate(X_test_padded, y_test)[1]
 print('Accuracy:', accuracy)
 
-# Sauvegarder l'architecture du modèle en JSON
+# Confusion Matrix
+y_pred = model.predict(X_test_padded)
+y_pred_classes = y_pred.argmax(axis=1)
+conf_matrix = confusion_matrix(y_test, y_pred_classes)
+
+print("Confusion Matrix:")
+print(conf_matrix)
+
+# Classification Report
+class_labels = {0: 'hate speech', 1: 'offensive language', 2: 'neither'}
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_classes, target_names=class_labels.values()))
+
+# Save the model architecture in JSON
 model_json = model.to_json()
-with open("/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_model.json", "w") as json_file:
+with open("/Users/gemmafelton/Desktop/models/rnn_model.json", "w") as json_file:
     json_file.write(model_json)
 
-# Sauvegarder les poids du modèle
-model.save_weights("/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_model_weights.h5")
+# Save the model weights
+model.save_weights("/Users/gemmafelton/Desktop/models/rnn_model_weights.h5")
+
 
 # Charger le modèle sauvegardé
 loaded_model = tf.keras.models.model_from_json(model_json)
-loaded_model.load_weights("/Users/gemmafelton/Desktop/Interface_web/scripts/models/rnn_model_weights.h5")
+loaded_model.load_weights("/Users/gemmafelton/Desktop/models/rnn_model_weights.h5")
 
 # Faire des prédictions sur un nouvel exemple
 input_tweet = input("Enter the tweet that you'd like to analyse: ")
