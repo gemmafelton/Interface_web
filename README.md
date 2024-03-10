@@ -16,16 +16,18 @@ origine, format, statut juridique et les traitements opérés sur celles-ci
 
 L'auteur d'origine, [Tom Davidson](https://huggingface.co/datasets/tdavidson/hate_speech_offensive), a utilisé Twitter API afin d'extraire les tweets anglais en utilisant plusieurs termes spécifiques rélévant du discours haineux ou du langage offensive. Les tweets ont ensuite été annotés manuellement par plusieurs annotateurs.
 
-Le [dataset](https://github.com/gemmafelton/Interface_web/blob/main/corpus) est sous licence MIT. Les données sont téléchargéables sous forme csv et contiennent 22,660 lignes sous forme de tweets. Les colonnes qui se trouvent dans le tableau sont : count (*nombre total d'annotations*), hate_speech_count (*nombre d'annotations classifiant un tweet comme haineux*), offensive_language_count (*nombre d'annotations classifiant un tweet comme du langage offensive*), neither_count (*nombre d'annotations classifiant un tweet comme non haineux non offensive*)
+Le [dataset](https://github.com/gemmafelton/Interface_web/blob/main/corpus) est sous licence MIT. Les données sont téléchargéables sous forme csv et contiennent 22,660 lignes sous forme de tweets. Les colonnes qui se trouvent dans le tableau sont : count (*nombre total d'annotations*), hate_speech_count (*nombre d'annotations classifiant un tweet comme haineux*), offensive_language_count (*nombre d'annotations classifiant un tweet comme du langage offensive*), neither_count (*nombre d'annotations classifiant un tweet comme non haineux non offensive*).
 
 Nous avons fait les prétraitements suivants sur le corpus : 
 * Supprimer les mentions et les liens
 * Supprimer la ponctuation et les caractères spéciaux
 * Mettre en minuscules
 
+Nous avons ensuite réduite la taille du corpus à 20%, soit 5,308 lignes, afin de pouvoir faire l'entrainement des modeles.
+
 Puis on a divisé le corpus en entraînement et test : 
-* Taille de l'ensemble d'entraînement : 19826
-* Taille de l'ensemble de test : 4957
+* Taille de l'ensemble d'entraînement : 3965
+* Taille de l'ensemble de test : 992
 
 
 
