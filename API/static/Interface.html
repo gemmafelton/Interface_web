@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DetectTweets</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="app-name">DetectTweets</div>
+
+        <!-- Section "Test it out" -->
+        <div class="tweet-section">
+            <!-- Section d'essai -->
+            <div class="trial-section">
+                <div class="test-details">
+                    <div>Test it out</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tweet input box -->
+        <div class="tweet">
+            <textarea id="tweetInput" placeholder="What's happening?" rows="4" style="width: 100%;"></textarea>
+            <button class="tweet-button" id="tweetButton">
+                <img src="/chemin/vers/votre/image/enveloppe.png" alt="Envelope Icon">
+                Test
+            </button>
+        </div>
+        
+
+        <!-- Result box -->
+        <div class="result-box" id="resultBox">
+            <p class="result-text" id="resultText"></p>
+            <p class="result-percentage" id="resultPercentage"></p>
+        </div>
+
+        <!-- Title for example tweets -->
+        <!-- Title for example tweets -->
+<div class="example-tweets">
+    <h2>Example Tweets</h2>
+    <!-- Example tweets -->
+    <div class="tweet">
+        <div class="tweet-text"><em>This is an example of a neutral tweet.</em></div>
+    </div>
+    <div class="tweet">
+        <div class="tweet-text"><em>This is an example of a hateful/offensive tweet.</em></div>
+    </div>
+    <div class="tweet">
+        <div class="tweet-text"><em>This is another example of a neutral tweet.</em></div>
+    </div>
+
+    <!-- History -->
+    <div class="history">
+        <h2>History</h2>
+        <ul id="historyList">
+            <!-- History items will be added here dynamically -->
+        </ul>
+    </div>
+</div>
+
+
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <div class="nav-item" onclick="toggleInfo()">About</div>
+        <div class="nav-item">Instructions</div>
+        <div class="nav-item" onclick="toggleContact()">Contact</div>
+    </div>
+
+    <!-- Contact section -->
+    <div class="nav-info" id="navContact">
+        <h2>Contact</h2>
+        <p>Creators :</p>
+        <ul>
+            <li>Felton Gemma : 39000001@parisnanterre.fr</li>
+            <li>Hamizi Tannina : 39002519@parisnanterre.fr</li>
+        </ul>
+        <!-- GitHub link -->
+        <a href="https://github.com/gemmafelton/Interface_web.git" target="_blank" class="github-link">
+            <img src="/Users/tannina/Desktop/Interface/static/Image/Github.png" alt="GitHub Logo">
+            GitHub
+        </a>
+    </div>
+
+    <!-- Additional Information in the Navigation Bar -->
+    <div class="nav-info" id="navInfo">
+        <h2>Additional Information</h2>
+        <p>This application was developed as part of two courses led by Loïc Grobol:</p>
+        <ul>
+            <li>Neural Networks</li>
+            <li>Web Interface</li>
+        </ul>
+        <p>It focuses on detecting tweets in English using a specifically trained artificial intelligence model.</p>
+    </div>
+
+    <script src="/static/scriptapi.js"></script>
+</body>
+</html>
