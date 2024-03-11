@@ -9,18 +9,18 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 app = FastAPI()
 
 # Load the model
-model_path = "/Users/gemmafelton/Desktop/models/rnn_model.json"
-weights_path = "/Users/gemmafelton/Desktop/models/rnn_model_weights.h5"
+model_path = "/Users/tannina/Desktop/API/rnn_model/rnn_model.json"
+weights_path = "/Users/tannina/Desktop/API/rnn_model/rnn_model_weights.h5"
 loaded_model = tf.keras.models.model_from_json(open(model_path, "r").read())
 loaded_model.load_weights(weights_path)
 
 # Load the tokenizer configuration
-tokenizer_config_path = "/Users/gemmafelton/Desktop/models/tokenizer_config.json"
+tokenizer_config_path = "/Users/tannina/Desktop/API/rnn_model/tokenizer_config.json"
 with open(tokenizer_config_path, 'r') as tokenizer_config_file:
     tokenizer_config = json.load(tokenizer_config_file)
 
 # Load the tokenizer vocabulary
-tokenizer_vocab_path = "/Users/gemmafelton/Desktop/models/tokenizer_vocab.json"
+tokenizer_vocab_path = "/Users/tannina/Desktop/API/rnn_model/tokenizer_vocab.json"
 with open(tokenizer_vocab_path, 'r') as tokenizer_vocab_file:
     tokenizer_vocab = json.load(tokenizer_vocab_file)
 
@@ -77,8 +77,17 @@ html_content = """
         <!-- Navigation bar -->
         <div class="navbar">
             <div class="nav-item" onclick="toggleInfo()">About</div>
-            <div class="nav-item">Instructions</div>
+            <div class="nav-item" onclick="toggleInstructions()">Instructions</div>
             <div class="nav-item" onclick="toggleContact()">Contact</div>
+        </div>
+
+        <!-- Instructions section -->
+        <div class="nav-info" id="navInstructions" style="display: none;">
+            <h2>Instructions</h2>
+            <ol>
+                <li>We have developed an application to determine if tweets contain hateful content, subsequently classifying them into different categories such as "offensive," "hateful," or "neutral." This application is based on a recurrent neural network (RNN) model.</li>
+                <li>Please enter the tweet you would like to analyze and observe how it is classified into the different categories</li>
+            </ol>
         </div>
 
         <!-- Contact section -->
@@ -93,7 +102,7 @@ html_content = """
             <a href="https://github.com/gemmafelton/Interface_web.git" target="_blank" class="github-link">GitHub</a>
         </div>
 
-        
+
 
         <!-- Additional Information in the Navigation Bar -->
         <div class="nav-info" id="navInfo">
