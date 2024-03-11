@@ -12,7 +12,7 @@ Pour utiliser notre interfce, suivez ces étapes :
 Clonez le dépôt : git clone git@github.com:gemmafelton/Interface_web.git </br>
 Accedez au projet en local : cd Interface_web </br>
 Accédez au dossier API : cd API </br>
-Assurez vous d'avoir FastApi installé sur votre machine, sinon faites : pip install fastapi uvicorn
+Assurez vous d'avoir FastApi installé sur votre machine, sinon faites : pip install fastapi uvicorn </br>
 Exécutez l'application : uvicorn api:app --reload </br>
 Écrivez votre tweet que vous aimerez analyser dans la boite </br>
 Cliquez sur test </br>
