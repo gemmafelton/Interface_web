@@ -18,4 +18,7 @@ Cliquez sur test </br>
 C'est parti !  </br>
 Observez l'analyse de votre tweet </br>
 
-Enjoy ! :)
+Enjoy ! :) </br>
+
+![start](https://i.gifer.com/7RQq.gif)
+
