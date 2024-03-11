@@ -93,8 +93,11 @@ En unissant la robustesse de FastAPI à une interface utilisateur inspirée de T
 Nos résultats sont en adéquation avec nos attentes concernant l'interface que nous avons développée. Nous avons réussi à mettre en place une interface conforme à notre vision, offrant une expérience utilisateur fluide et intuitive. En examinant différents exemples de tweets, nous constatons que la plupart sont correctement classifiés comme offensants, ce qui témoigne de l'efficacité de notre système de détection. Par exemple, des tweets contenant des insultes ou des propos discriminatoires sont identifiés avec succès par notre système, démontrant ainsi sa capacité à détecter efficacement le contenu problématique.
 <p>(capture d'écran a ajouter pour montrer les prédictions)</p>
 
-Resultats tweet '**You are so beautiful and kind I love you**' : 
+Resultats tweet '*You are so beautiful and kind I love you*' : 
 ![Resultats tweet neither](ressources/tweet_neither.png)
+
+Resultats tweet '*You are bitch and I hate you*' : 
+![Resultats tweet offensive language](ressources/tweet_offensiveLanguage.png)
 
 ### Problèmes... ?
 
