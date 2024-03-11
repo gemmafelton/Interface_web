@@ -9,18 +9,18 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 app = FastAPI()
 
 # Load the model
-model_path = "/Users/tannina/Desktop/API/rnn_model/rnn_model.json"
-weights_path = "/Users/tannina/Desktop/API/rnn_model/rnn_model_weights.h5"
+model_path = "/Users/gemmafelton/Desktop/Interface_web/API/rnn_model/rnn_model.json"
+weights_path = "/Users/gemmafelton/Desktop/Interface_web/API/rnn_model/rnn_model_weights.h5"
 loaded_model = tf.keras.models.model_from_json(open(model_path, "r").read())
 loaded_model.load_weights(weights_path)
 
 # Load the tokenizer configuration
-tokenizer_config_path = "/Users/tannina/Desktop/API/rnn_model/tokenizer_config.json"
+tokenizer_config_path = "/Users/gemmafelton/Desktop/Interface_web/API/rnn_model/tokenizer_config.json"
 with open(tokenizer_config_path, 'r') as tokenizer_config_file:
     tokenizer_config = json.load(tokenizer_config_file)
 
 # Load the tokenizer vocabulary
-tokenizer_vocab_path = "/Users/tannina/Desktop/API/rnn_model/tokenizer_vocab.json"
+tokenizer_vocab_path = "/Users/gemmafelton/Desktop/Interface_web/API/rnn_model/tokenizer_vocab.json"
 with open(tokenizer_vocab_path, 'r') as tokenizer_vocab_file:
     tokenizer_vocab = json.load(tokenizer_vocab_file)
 
@@ -95,8 +95,8 @@ html_content = """
             <h2>Contact</h2>
             <p>Creators :</p>
             <ul>
-                <li>Felton Gemma : 39000001@parisnanterre.fr</li>
-                <li>Hamizi Tannina : 39002519@parisnanterre.fr</li>
+                <li>Gemma Felton : 39000001@parisnanterre.fr</li>
+                <li>Tannina Hamizi: 39002519@parisnanterre.fr</li>
             </ul>
             <!-- GitHub link -->
             <a href="https://github.com/gemmafelton/Interface_web.git" target="_blank" class="github-link">GitHub</a>

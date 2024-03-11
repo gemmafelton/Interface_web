@@ -20,8 +20,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 # Tokenize the training and testing sets
-train_encodings = tokenizer(list(X_train.values), truncation=True, padding=True, max_length=60, return_tensors='tf')
-test_encodings = tokenizer(list(X_test.values), truncation=True, padding=True, max_length=60, return_tensors='tf')
+train_encodings = tokenizer(list(X_train.values), truncation=True, padding=True, max_length=40, return_tensors='tf')
+test_encodings = tokenizer(list(X_test.values), truncation=True, padding=True, max_length=40, return_tensors='tf')
 
 # Build and compile the BERT model
 model = TFBertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
@@ -45,8 +45,8 @@ model.fit(
     [train_input_ids, train_attention_masks],
     y_train,
     validation_data=([test_input_ids, test_attention_masks], y_test),
-    epochs=16,
-    batch_size=32,
+    epochs=12,
+    batch_size=30,
     callbacks=[early_stopping]
 )
 

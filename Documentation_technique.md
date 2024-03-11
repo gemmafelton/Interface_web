@@ -36,14 +36,14 @@ La première partie du projet, dédiée aux modèles, a été marqué par d'impo
 # I. Reseau de neurones
 ## Les implémentations
 
-*Modèles utilisés :* 
-</br>BERT et RNN
+*Modèles utilisés :* </br>
+* BERT : Bidirectional Encoder Representations from Transformers
+* RNN : Recurrent Neural Network</br>
 
-</br>
-*Paramètres communs :*
+*Parametres communs :*
 * Longueur maximale de séquence fixée à 40 caractères, alignée sur la moyenne de la longueur d'un tweet.
-* Batch size ajusté à 32 pour l'entraînement.
-* Nombre d'epochs  fixé à 16 pour chaque modèle.
+* Batch size ajusté à 30 pour l'entraînement.
+* Nombre d'epochs  fixé à 12 pour chaque modèle.</br>
 
 *Justification des paramètres :*
 * Longueur de séquence adaptée à la nature des données (moyenne de 40 caractères par tweet).
@@ -75,7 +75,6 @@ Dans d'autres travaux, il a été observé que dans la plupart des cas, au moins
 ## Les implémentations
 
 Nous avons opté pour FastAPI comme infrastructure principale pour notre système de détection de tweets haineux en raison de plusieurs facteurs clés. En premier lieu, la réactivité et la facilité d'implémentation de FastAPI en font un choix idéal pour un projet nécessitant une analyse en temps réel de données provenant de sources dynamiques telles que Twitter. Grâce à sa gestion efficace des requêtes asynchrones basée sur ASGI, FastAPI nous permet de traiter rapidement les flux de données entrants, facilitant ainsi une détection proactive de contenu potentiellement offensant ou haineux.
-*L’implémentation ou les implémentations (modélisation le cas échéant, modules et/ou API utilisés, différents langages le cas échéant)*
 
 Nous avons choisi FastAPI comme infrastructure principale pour notre système de détection de tweets haineux en raison de sa réactivité et de sa facilité d'implémentation, parfaites pour une analyse en temps réel de données dynamiques telles que celles provenant de Twitter. Grâce à sa gestion efficace des requêtes asynchrones basée sur ASGI, FastAPI nous permet de traiter rapidement les flux de données entrants, facilitant ainsi une détection proactive de contenu potentiellement offensant ou haineux.
 
