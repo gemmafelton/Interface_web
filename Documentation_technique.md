@@ -93,6 +93,9 @@ En unissant la robustesse de FastAPI à une interface utilisateur inspirée de T
 Nos résultats sont en adéquation avec nos attentes concernant l'interface que nous avons développée. Nous avons réussi à mettre en place une interface conforme à notre vision, offrant une expérience utilisateur fluide et intuitive. En examinant différents exemples de tweets, nous constatons que la plupart sont correctement classifiés comme offensants, ce qui témoigne de l'efficacité de notre système de détection. Par exemple, des tweets contenant des insultes ou des propos discriminatoires sont identifiés avec succès par notre système, démontrant ainsi sa capacité à détecter efficacement le contenu problématique.
 <p>(capture d'écran a ajouter pour montrer les prédictions)</p>
 
+Resultats tweet '**You are so beautiful and kind I love you**' : 
+![Resultats tweet neither](ressources/tweet_neither.png)
+
 ### Problèmes... ?
 
 Nous avons rencontré plusieurs problèmes tout au long du processus, et malheureusement, certains d'entre eux n'ont pas encore été résolus. L'un des principaux défis a été lié à l'API, où nous avons constaté des difficultés avec le chargement du modèle ainsi que des problèmes de cohérence entre l'API et le modèle pré-entraîné. Ces difficultés ont entraîné des résultats imprévisibles lors des prédictions, compromettant ainsi l'efficacité de notre système de détection.
