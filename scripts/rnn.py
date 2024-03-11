@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 import json
+import h5py
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -50,11 +51,11 @@ model.add(Dense(3, activation='softmax'))  # 3 classes pour notre corpus
 # Compiler le modèle
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-# Define early stopping
+# Define early stoppin’g
 early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
 # Train the model with early stopping
-model.fit(X_train_padded, y_train, validation_data=(X_test_padded, y_test), epochs=18, batch_size=32, callbacks=[early_stopping])
+model.fit(X_train_padded, y_train, validation_data=(X_test_padded, y_test), epochs=12, batch_size=30, callbacks=[early_stopping])
 
 # Evaluate the model
 accuracy = model.evaluate(X_test_padded, y_test)[1]
@@ -81,25 +82,12 @@ with open("/Users/gemmafelton/Desktop/models/rnn_model.json", "w") as json_file:
 # Save the model weights
 model.save_weights("/Users/gemmafelton/Desktop/models/rnn_model_weights.h5")
 
+# Save the tokenizer configuration
+tokenizer_config_path = "/Users/gemmafelton/Desktop/models/tokenizer_config.json"
+with open(tokenizer_config_path, 'w') as tokenizer_config_file:
+    tokenizer_config_file.write(json.dumps(tokenizer.get_config()))
 
-# Charger le modèle sauvegardé
-loaded_model = tf.keras.models.model_from_json(model_json)
-loaded_model.load_weights("/Users/gemmafelton/Desktop/models/rnn_model_weights.h5")
-
-# Faire des prédictions sur un nouvel exemple
-input_tweet = input("Enter the tweet that you'd like to analyse: ")
-input_sequence = tokenizer.texts_to_sequences([input_tweet])
-input_padded = pad_sequences(input_sequence, maxlen=max_sequence_length, padding='post')
-
-output = loaded_model.predict(input_padded)
-print(output)
-
-# Assuming 'output' is a 2D array with shape (num_samples, num_classes)
-probabilities = tf.nn.softmax(output)
-probabilities_list = probabilities.numpy()
-
-class_labels = {0: 'hate speech', 1: 'offensive language', 2: 'neither'}
-
-print("Probabilities for each class:")
-for i, prob in enumerate(probabilities_list[0]):
-    print(f"Probability that this tweet is {class_labels[i]}: {prob * 100:.2f}%")
+# Save the tokenizer vocabulary
+tokenizer_vocab_path = "/Users/gemmafelton/Desktop/models/tokenizer_vocab.json"
+with open(tokenizer_vocab_path, 'w') as tokenizer_vocab_file:
+    tokenizer_vocab_file.write(json.dumps(tokenizer.word_index))
