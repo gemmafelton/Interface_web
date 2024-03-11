@@ -20,5 +20,4 @@ Observez l'analyse de votre tweet </br>
 
 Enjoy ! :) </br>
 
-![start](https://i.gifer.com/7RQq.gif)
 
