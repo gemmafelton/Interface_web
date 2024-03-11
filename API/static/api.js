@@ -80,3 +80,12 @@ function toggleContact() {
         navContact.style.display = 'none';
     }
 }
+
+function toggleInstructions() {
+    const navInstructions = document.getElementById('navInstructions');
+    if (navInstructions.style.display === 'none' || navInstructions.style.display === '') {
+        navInstructions.style.display = 'block';
+    } else {
+        navInstructions.style.display = 'none';
+    }
+}
