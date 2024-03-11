@@ -1,4 +1,4 @@
-# Projet de fin d'année
+# La détéction du discours haineux
 
 ## Les objectifs du projet
 
@@ -12,6 +12,7 @@ L'auteur d'origine, [Tom Davidson](https://huggingface.co/datasets/tdavidson/hat
 
 Le [dataset](https://github.com/gemmafelton/Interface_web/blob/main/corpus) est sous licence MIT. Les données sont téléchargéables sous forme csv et contiennent 22,660 lignes sous forme de tweets. Les colonnes qui se trouvent dans le tableau sont : count (*nombre total d'annotations*), hate_speech_count (*nombre d'annotations classifiant un tweet comme haineux*), offensive_language_count (*nombre d'annotations classifiant un tweet comme du langage offensive*), neither_count (*nombre d'annotations classifiant un tweet comme non haineux non offensive*).
 
+### Les prétraitements
 Nous avons fait les prétraitements suivants sur le corpus :
 * Supprimer les mentions
 * Supprimer les liens
@@ -26,7 +27,6 @@ Puis nous avons divisé le corpus en entraînement et test :
 
 
 ## La méthodologie
-*La méthodologie (comment vous vous êtes répartis le travail, comment vous avez identifié les problèmes et les avez résolus, différentes étapes du projet…)*
 
 La concrétisation de ce projet a exigé un investissement significatif en termes de temps et d'essais, s'avérant être une démarche longue et complexe. La répartition des tâches au sein de l'équipe s'est effectuée en trois parties : Gemma s'est concentrée sur la création et les essais des modèles, Tannina a pris en charge le développement et les essais de l'API ainsi que de l'interface, tandis que la rédaction du document technique a été une collaboration entre nous deux. Cette approche a permis une spécialisation efficace dans chaque domaine, maximisant ainsi notre productivité et la qualité des résultats dans l'ensemble du projet.
 
@@ -36,25 +36,39 @@ La première partie du projet, dédiée aux modèles, a été marqué par d'impo
 # I. Reseau de neurones
 ## Les implémentations
 
-*L’implémentation ou les implémentations (modélisation le cas échéant, modules et/ou API utilisés, différents langages le cas échéant)*
+*Modèles utilisés :* BERT et RNN
+</br>
+*Paramètres communs :*
+* Longueur maximale de séquence fixée à 40 caractères, alignée sur la moyenne de la longueur d'un tweet.
+* Batch size ajusté à 32 pour l'entraînement.
+* Nombre d'epochs  fixé à 16 pour chaque modèle.
 
+*Justification des paramètres :*
+* Longueur de séquence adaptée à la nature des données (moyenne de 40 caractères par tweet).
+* Batch size et nombre d'époques ajustés pour l'efficacité de l'entraînement.
+* Arrêt anticipé pour prévenir le surapprentissage et accélérer la convergence des modèles.</br>
 
-max length=40 : la longueur moyenne d'un tweet est d'environ 40 caractères
-modification de batch size et epochs -> batch size = 32 ; epochs = 16
-ajout de early stopping=3 donc ça s'arrete si le loss ne s'améliore pas pour 3 epochs consecutives
+*Early stopping :*
+* Intégration de la fonction d'arrêt anticipé (early stopping).
+* Critère de patience défini à 3 époques.
+* L'entraînement est interrompu si la loss ne s'améliore pas pendant trois epochs consécutives.</br>
 
 
 ## Les résultats
 
-*Les résultats (fichiers output, visualisations…) et une discussion sur ces résultats (ce que vous auriez aimé faire et ce que vous avez pu faire par exemple)*
+Le modèle RNN (Réseau de Neurones Récurrents) s'est avéré plus performant que BERT dans la détection du discours de haine. 
 
+![Resultats matrices de confusion pour BERT](https://github.com/gemmafelton/Interface_web/blob/main/ressources/matrix_bert.jpeg)
 
+![Resultats matrices de confusion pour RNN](https://github.com/gemmafelton/Interface_web/blob/main/ressources/matrix_rnn.jpeg)
+
+Cette supériorité peut s'expliquer par la capacité du RNN à capturer les dépendances séquentielles, particulièrement cruciales pour analyser les nuances subtiles et les motifs temporels présents dans le discours de haine. La nature spécifique de l'ensemble de données a probablement favorisé le RNN, soulignant l'importance de choisir un modèle en fonction des caractéristiques particulières de la tâche. En revanche, pour BERT, des stratégies de prétraitement et de fine-tuning plus adaptées auraient pu être explorées pour exploiter pleinement sa capacité à comprendre le contexte, offrant ainsi des perspectives d'optimisation pour des tâches similaires à l'avenir.
+
+Dans d'autres travaux, il a été observé que dans la plupart des cas, au moins 70% de l'ensemble de données était étiqueté comme étant du discours haineux. Cela suggère que le dataset initial pourrait ne pas contenir suffisamment d'exemples de discours non haineux pour un entraînement optimal des modèles. Par conséquent, il serait judicieux de considérer un nouveau ensemble de données comportant davantage de discours neutres afin d'améliorer la performance et la généralisation des modèles de détection de discours de haine.
 
 
 # II. Web Interfaces
 ## Les implémentations
-
-*L’implémentation ou les implémentations (modélisation le cas échéant, modules et/ou API utilisés, différents langages le cas échéant)*
 
 Nous avons opté pour FastAPI comme infrastructure principale pour notre système de détection de tweets haineux en raison de plusieurs facteurs clés. En premier lieu, la réactivité et la facilité d'implémentation de FastAPI en font un choix idéal pour un projet nécessitant une analyse en temps réel de données provenant de sources dynamiques telles que Twitter. Grâce à sa gestion efficace des requêtes asynchrones basée sur ASGI, FastAPI nous permet de traiter rapidement les flux de données entrants, facilitant ainsi une détection proactive de contenu potentiellement offensant ou haineux.
 
@@ -64,9 +78,11 @@ Notre approche a consisté à intégrer les technologies telles que le HTML, le 
 Nous avons également apporté une attention minutieuse à l'aspect visuel en personnalisant l'apparence à l'aide de fichiers CSS. Inspirés des tendances de design contemporaines, nous avons intégré des éléments familiers à ceux de Twitter pour créer une interface à la fois moderne et intuitive. Cette approche vise à garantir une expérience utilisateur cohérente et plaisante, tout en favorisant la familiarité avec notre application.
 
 En unissant la robustesse de FastAPI à une interface utilisateur inspirée de Twitter, notre objectif était de créer une expérience d'interaction positive avec notre application de détection de contenu offensant sur les réseaux sociaux. Nous avons ainsi cherché à offrir aux utilisateurs une expérience sécurisée et agréable tout en leur fournissant des fonctionnalités avancées de détection et de suivi des tweets haineux.
+
 ## Les résultats
 
 ### Résultats obtenus :
+
 Nos résultats sont en adéquation avec nos attentes concernant l'interface que nous avons développée. Nous avons réussi à mettre en place une interface conforme à notre vision, offrant une expérience utilisateur fluide et intuitive. En examinant différents exemples de tweets, nous constatons que la plupart sont correctement classifiés comme offensants, ce qui témoigne de l'efficacité de notre système de détection. Par exemple, des tweets contenant des insultes ou des propos discriminatoires sont identifiés avec succès par notre système, démontrant ainsi sa capacité à détecter efficacement le contenu problématique.
 (capture d'écran a ajouter pour montrer les prédictions)
 
@@ -85,7 +101,7 @@ En résumé, ces défis techniques ont entravé notre capacité à fournir des r
 # Discussion
 
 ### Discussion sur les résultats :
-Dans l'ensemble, nos résultats sont plutôt positifs, en accord avec les conclusions de recherches antérieures telles que celles de Chiril et al. La majorité des tweets sont classifiés comme offensants, ce qui confirme la fiabilité de notre système de détection. En testant un vaste éventail de tweets, nous avons pu confirmer cette tendance. Cela suggère que notre système est robuste et capable de détecter de manière cohérente le contenu problématique sur les plateformes de réseaux sociaux.
+Dans l'ensemble, nos résultats sont plutôt positifs et en accord avec les conclusions de recherches antérieures telles que celles de Chiril et al. La majorité des tweets sont classifiés comme offensants, ce qui confirme la fiabilité de notre système de détection. En testant un vaste éventail de tweets, nous avons pu confirmer cette tendance. Cela suggère que notre système est robuste et capable de détecter de manière cohérente le contenu problématique sur les plateformes de réseaux sociaux.
 
 ### Perspectives :
 Malgré ces résultats encourageants, des améliorations peuvent être envisagées. Nous aurions voulu ajouter une sorte d'échelle graduée pour représenter la prédiction en pourcentage, mais nous n'avons pas réussi à le mettre en œuvre. Cette fonctionnalité pourrait permettre aux utilisateurs d'obtenir une meilleure compréhension de la confiance de la prédiction. Pour l'avenir, nous envisageons de rendre notre système multilingue, permettant ainsi une détection plus étendue de contenus offensants dans différentes langues. De plus, nous pourrions envisager de personnaliser davantage le système en intégrant les retours des utilisateurs pour affiner la détection en fonction de leurs préférences et spécificités. Ces perspectives pourraient contribuer à améliorer encore la précision et l'efficacité de notre système de détection de tweets haineux.
