@@ -36,7 +36,9 @@ La première partie du projet, dédiée aux modèles, a été marqué par d'impo
 # I. Reseau de neurones
 ## Les implémentations
 
-*Modèles utilisés :* BERT et RNN
+*Modèles utilisés :* 
+</br>BERT et RNN
+
 </br>
 *Paramètres communs :*
 * Longueur maximale de séquence fixée à 40 caractères, alignée sur la moyenne de la longueur d'un tweet.
@@ -58,8 +60,10 @@ La première partie du projet, dédiée aux modèles, a été marqué par d'impo
 
 Le modèle RNN (Réseau de Neurones Récurrents) s'est avéré plus performant que BERT dans la détection du discours de haine. 
 
+Resultats matrices de confusion pour BERT : 
 ![Resultats matrices de confusion pour BERT](https://github.com/gemmafelton/Interface_web/blob/main/ressources/matrix_bert.jpeg)
 
+Resultats matrices de confusion pour RNN:
 ![Resultats matrices de confusion pour RNN](https://github.com/gemmafelton/Interface_web/blob/main/ressources/matrix_rnn.jpeg)
 
 Cette supériorité peut s'expliquer par la capacité du RNN à capturer les dépendances séquentielles, particulièrement cruciales pour analyser les nuances subtiles et les motifs temporels présents dans le discours de haine. La nature spécifique de l'ensemble de données a probablement favorisé le RNN, soulignant l'importance de choisir un modèle en fonction des caractéristiques particulières de la tâche. En revanche, pour BERT, des stratégies de prétraitement et de fine-tuning plus adaptées auraient pu être explorées pour exploiter pleinement sa capacité à comprendre le contexte, offrant ainsi des perspectives d'optimisation pour des tâches similaires à l'avenir.
