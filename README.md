@@ -66,14 +66,11 @@ Nous avons également apporté une attention minutieuse à l'aspect visuel en pe
 En unissant la robustesse de FastAPI à une interface utilisateur inspirée de Twitter, notre objectif était de créer une expérience d'interaction positive avec notre application de détection de contenu offensant sur les réseaux sociaux. Nous avons ainsi cherché à offrir aux utilisateurs une expérience sécurisée et agréable tout en leur fournissant des fonctionnalités avancées de détection et de suivi des tweets haineux.
 ## Les résultats
 
-*Les résultats (fichiers output, visualisations…) et une discussion sur ces résultats (ce que vous auriez aimé faire et ce que vous avez pu faire par exemple)*
+### Résultats obtenus :
+Nos résultats sont en adéquation avec nos attentes concernant l'interface que nous avons développée. Nous avons réussi à mettre en place une interface conforme à notre vision, offrant une expérience utilisateur fluide et intuitive. En examinant différents exemples de tweets, nous constatons que la plupart sont correctement classifiés comme offensants, ce qui témoigne de l'efficacité de notre système de détection. Par exemple, des tweets contenant des insultes ou des propos discriminatoires sont identifiés avec succès par notre système, démontrant ainsi sa capacité à détecter efficacement le contenu problématique.
+(capture d'écran a ajouter pour montrer les prédictions)
 
-
-
-
-
-
-# Problèmes... ?
+### Problèmes... ?
 
 Nous avons rencontré plusieurs problèmes tout au long du processus, et malheureusement, certains d'entre eux n'ont pas encore été résolus. L'un des principaux défis a été lié à l'API, où nous avons constaté des difficultés avec le chargement du modèle ainsi que des problèmes de cohérence entre l'API et le modèle pré-entraîné. Ces difficultés ont entraîné des résultats imprévisibles lors des prédictions, compromettant ainsi l'efficacité de notre système de détection.
 
@@ -86,3 +83,9 @@ Il est également important de noter que certains de ces problèmes pourraient �
 En résumé, ces défis techniques ont entravé notre capacité à fournir des résultats fiables et précis, soulignant la nécessité de poursuivre nos efforts pour résoudre ces problèmes et améliorer la performance globale de notre système.
 
 # Discussion
+
+### Discussion sur les résultats :
+Dans l'ensemble, nos résultats sont plutôt positifs, en accord avec les conclusions de recherches antérieures telles que celles de Chiril et al. La majorité des tweets sont classifiés comme offensants, ce qui confirme la fiabilité de notre système de détection. En testant un vaste éventail de tweets, nous avons pu confirmer cette tendance. Cela suggère que notre système est robuste et capable de détecter de manière cohérente le contenu problématique sur les plateformes de réseaux sociaux.
+
+### Perspectives :
+Malgré ces résultats encourageants, des améliorations peuvent être envisagées. Nous aurions voulu ajouter une sorte d'échelle graduée pour représenter la prédiction en pourcentage, mais nous n'avons pas réussi à le mettre en œuvre. Cette fonctionnalité pourrait permettre aux utilisateurs d'obtenir une meilleure compréhension de la confiance de la prédiction. Pour l'avenir, nous envisageons de rendre notre système multilingue, permettant ainsi une détection plus étendue de contenus offensants dans différentes langues. De plus, nous pourrions envisager de personnaliser davantage le système en intégrant les retours des utilisateurs pour affiner la détection en fonction de leurs préférences et spécificités. Ces perspectives pourraient contribuer à améliorer encore la précision et l'efficacité de notre système de détection de tweets haineux.
