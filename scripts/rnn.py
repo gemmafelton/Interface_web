@@ -1,3 +1,4 @@
+# Import necessary libraries
 import pandas as pd
 import tensorflow as tf
 import json
@@ -11,47 +12,47 @@ from tensorflow.keras.layers import Embedding, LSTM, Dense
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.callbacks import EarlyStopping
 
-# Charger le dataset
+# Load the dataset from a CSV file
 dataset_path = "/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_detection.csv"
 df = pd.read_csv(dataset_path, delimiter=',')
 
-# Séparer les données en features (X) et labels (y)
+# Separate the data into features (X) and labels (y)
 X = df['tweet']
 y = df['class']
 
-# Diviser les données en ensembles d'entraînement et de test
+# Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 print("Size of training set:", len(X_train))
 print("Size of test set:", len(X_test))
 
-# Tokenizer les données
-max_words = 10000  # Nombre maximal de mots dans le vocabulaire
+# Tokenize the data
+max_words = 10000  # Maximum number of words in the vocabulary
 tokenizer = Tokenizer(num_words=max_words)
 tokenizer.fit_on_texts(X_train)
 
-# Convertir les textes en séquences d'entiers
+# Convert texts to sequences of integers
 X_train_sequences = tokenizer.texts_to_sequences(X_train)
 X_test_sequences = tokenizer.texts_to_sequences(X_test)
 
-# Remplir les séquences pour qu'elles aient toutes la même longueur
+# Pad sequences to have the same length
 max_sequence_length = 40
 X_train_padded = pad_sequences(X_train_sequences, maxlen=max_sequence_length, padding='post')
 X_test_padded = pad_sequences(X_test_sequences, maxlen=max_sequence_length, padding='post')
 
-# Construire le modèle RNN
+# Build the RNN model
 embedding_dim = 64
 lstm_units = 64
 
 model = Sequential()
 model.add(Embedding(input_dim=max_words, output_dim=embedding_dim, input_length=max_sequence_length))
 model.add(LSTM(units=lstm_units))
-model.add(Dense(3, activation='softmax'))  # 3 classes pour notre corpus
+model.add(Dense(3, activation='softmax'))  # 3 classes for our corpus
 
-# Compiler le modèle
+# Compile the model
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-# Define early stoppin’g
+# Define early stopping
 early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
 # Train the model with early stopping

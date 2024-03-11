@@ -1,3 +1,4 @@
+# Import necessary libraries
 import pandas as pd
 import tensorflow as tf
 import numpy as np
@@ -6,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from tensorflow.keras.callbacks import EarlyStopping
 
-# Load the dataset
+# Load the dataset from a CSV file
 dataset_path = "/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_detection.csv"
 df = pd.read_csv(dataset_path, delimiter=',')
 
@@ -44,8 +45,8 @@ model.fit(
     [train_input_ids, train_attention_masks],
     y_train,
     validation_data=([test_input_ids, test_attention_masks], y_test),
-    epochs=12,
-    batch_size=30,
+    epochs=16,
+    batch_size=32,
     callbacks=[early_stopping]
 )
 

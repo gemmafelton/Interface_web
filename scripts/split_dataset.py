@@ -1,15 +1,16 @@
+# Import necessary libraries
 import pandas as pd
 
-# Charger votre dataset
+# Load your dataset from a CSV file
 dataset_path = "/Users/gemmafelton/Desktop/Interface_web/corpus/corpus_original.csv"
 df = pd.read_csv(dataset_path, delimiter=',')
 
-# Choisissez le pourcentage de lignes que vous souhaitez conserver
-pourcentage_a_garder = 20  # Par exemple, pour conserver 50% des lignes
+# Choose the percentage of rows you want to keep
+percentage_to_keep = 20  # For example, to keep 20% of the rows
 
-# Sélectionnez un échantillon aléatoire
-nouveau_df = df.sample(frac=pourcentage_a_garder / 100, random_state=42)
+# Select a random sample
+new_df = df.sample(frac=percentage_to_keep / 100, random_state=42)
 
-# Enregistrez le nouveau dataset dans un fichier CSV
-nouveau_chemin = "/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_corpus.csv"
-nouveau_df.to_csv(nouveau_chemin, index=False)
+# Save the new dataset to a CSV file
+new_path = "/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_corpus.csv"
+new_df.to_csv(new_path, index=False)

@@ -1,32 +1,33 @@
+# Import necessary libraries
 import pandas as pd
 import re
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
-# Charger le fichier CSV
+# Load the CSV file
 csv_path = '/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_corpus.csv'
 df = pd.read_csv(csv_path)
 
-# Remplacer les valeurs nulles par une chaîne vide
+# Replace null values with an empty string
 df['tweet'] = df['tweet'].fillna('')
 
-# Prétraitement des données
+# Data preprocessing function
 def preprocess_text(text):
-    # Supprimer les mentions et les liens
+    # Remove mentions and links
     text = re.sub(r'@[A-Za-z0-9_]+', '', str(text))
     text = re.sub(r'http\S+', '', text)
-    # Supprimer la ponctuation et les caractères spéciaux
+    # Remove punctuation and special characters
     text = re.sub(r'[^a-zA-Z\s]', '', text)
-    # Mettre en minuscules
+    # Convert to lowercase
     text = text.lower()
     return text
 
-# Appliquer la fonction de prétraitement au texte
+# Apply the preprocessing function to the text column
 df['tweet'] = df['tweet'].apply(preprocess_text)
 
-# Sauvegarder le DataFrame modifié dans un nouveau fichier CSV
+# Save the modified DataFrame to a new CSV file
 new_csv_path = '/Users/gemmafelton/Desktop/Interface_web/corpus/nouveau_detection.csv'
 df.to_csv(new_csv_path, index=False)
 
-# Afficher les données après le prétraitement
+# Display the data after preprocessing
 print(df.head())
