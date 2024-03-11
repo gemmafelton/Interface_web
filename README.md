@@ -21,5 +21,5 @@ Observez l'analyse de votre tweet </br>
 
 Enjoy ! :) </br>
 
-![GIF](https://i.gifer.com/7RQq.gif)
+![Gif lecture](https://i.gifer.com/7RQq.gif)
 
