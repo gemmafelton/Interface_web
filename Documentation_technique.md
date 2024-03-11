@@ -91,12 +91,11 @@ En unissant la robustesse de FastAPI à une interface utilisateur inspirée de T
 ### Résultats obtenus :
 
 Nos résultats sont en adéquation avec nos attentes concernant l'interface que nous avons développée. Nous avons réussi à mettre en place une interface conforme à notre vision, offrant une expérience utilisateur fluide et intuitive. En examinant différents exemples de tweets, nous constatons que la plupart sont correctement classifiés comme offensants, ce qui témoigne de l'efficacité de notre système de détection. Par exemple, des tweets contenant des insultes ou des propos discriminatoires sont identifiés avec succès par notre système, démontrant ainsi sa capacité à détecter efficacement le contenu problématique.
-<p>(capture d'écran a ajouter pour montrer les prédictions)</p>
 
-Resultats tweet '*You are so beautiful and kind I love you*' : 
+Résultat tweet '*You are so beautiful and kind I love you*' : 
 ![Resultats tweet neither](ressources/tweet_neither.png)
 
-Resultats tweet '*You are bitch and I hate you*' : 
+Résultat tweet '*You are bitch and I hate you*' : 
 ![Resultats tweet offensive language](ressources/tweet_offensiveLanguage.png)
 
 ### Problèmes... ?
@@ -108,13 +107,15 @@ De plus, des problèmes persistants ont été observés avec l'interface utilisa
 Il convient également de noter que notre interface API a été construite sur deux modèles distincts, mais cette approche n'a pas résolu nos problèmes. En effet, malgré l'utilisation de deux modèles différents, nous avons constaté que les prédictions demeuraient souvent constantes, quelle que soit l'entrée. En résumé, ces défis techniques ont entravé notre capacité à fournir des résultats fiables et précis, soulignant la nécessité de poursuivre nos efforts pour résoudre ces problèmes et améliorer la performance globale de notre système.
 
 Il est également important de noter que certains de ces problèmes pourraient être liés à des erreurs dans le code JavaScript de l'interface utilisateur. Étant donné que les messages d'erreur mentionnent des termes tels que "undefined" et "confiance undefined", il est probable que ces problèmes soient liés à des variables non définies ou à des erreurs de manipulation des données dans le script JavaScript. Il est donc essentiel de passer en revue et de déboguer le code JavaScript pour identifier et corriger ces erreurs potentielles, ce qui pourrait contribuer à résoudre certains des problèmes rencontrés avec l'interface utilisateur.
+De plus, nous avons rencontré des problèmes avec l'historique où le tweet est parfois ajouté deux fois, ce qui entraîne des doublons dans l'historique.
 
 En résumé, ces défis techniques ont entravé notre capacité à fournir des résultats fiables et précis, soulignant la nécessité de poursuivre nos efforts pour résoudre ces problèmes et améliorer la performance globale de notre système.
+
 
 # Discussion
 
 ### Discussion sur les résultats :
-Dans l'ensemble, nos résultats sont plutôt positifs et en accord avec les conclusions de recherches antérieures telles que celles de Chiril et al. La majorité des tweets sont classifiés comme offensants, ce qui confirme la fiabilité de notre système de détection. En testant un vaste éventail de tweets, nous avons pu confirmer cette tendance. Cela suggère que notre système est robuste et capable de détecter de manière cohérente le contenu problématique sur les plateformes de réseaux sociaux.
+Dans l'ensemble, nos résultats sont plutôt positifs et en accord avec les conclusions de recherches antérieures telles que celles de [Chiril et al. (2019). La majorité des tweets sont classifiés comme offensants, ce qui confirme la fiabilité de notre système de détection. En testant un vaste éventail de tweets, nous avons pu confirmer cette tendance. Cela suggère que notre système est robuste et capable de détecter de manière cohérente le contenu problématique sur les plateformes de réseaux sociaux.
 
 ### Perspectives :
 Malgré ces résultats encourageants, des améliorations peuvent être envisagées. Nous aurions voulu ajouter une sorte d'échelle graduée pour représenter la prédiction en pourcentage, mais nous n'avons pas réussi à le mettre en œuvre. Cette fonctionnalité pourrait permettre aux utilisateurs d'obtenir une meilleure compréhension de la confiance de la prédiction. Pour l'avenir, nous envisageons de rendre notre système multilingue, permettant ainsi une détection plus étendue de contenus offensants dans différentes langues. De plus, nous pourrions envisager de personnaliser davantage le système en intégrant les retours des utilisateurs pour affiner la détection en fonction de leurs préférences et spécificités. Ces perspectives pourraient contribuer à améliorer encore la précision et l'efficacité de notre système de détection de tweets haineux.
